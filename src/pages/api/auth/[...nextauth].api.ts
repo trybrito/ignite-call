@@ -1,8 +1,10 @@
 import { env } from '@/env'
+import { PrismaAdapter } from '@/lib/auth/prisma-adapter'
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 
 export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(),
   providers: [
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
@@ -18,7 +20,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ account }) {
       if (
-        account?.scope?.includes('https://www.googleapis.com/auth/calendar')
+        !account?.scope?.includes('https://www.googleapis.com/auth/calendar')
       ) {
         return '/register/connect-calendar?error=permissions'
       }
