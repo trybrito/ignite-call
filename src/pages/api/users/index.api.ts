@@ -27,7 +27,7 @@ export default async function handler(
   const user = await prisma.user.create({
     data: {
       username,
-      fullName,
+      full_name: fullName,
     },
   })
 
