@@ -1,4 +1,4 @@
-import { styled, Heading, Text } from '@ignite-ui/react'
+import { Heading, styled, Text } from '@ignite-ui/react'
 
 export const Container = styled('main', {
   display: 'flex',
