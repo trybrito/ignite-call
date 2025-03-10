@@ -44,7 +44,7 @@ export default function UpdateProfile() {
       bio,
     })
 
-    await router.push(`/schedule/${session.data?.user.name}`)
+    await router.push(`/schedule/${session.data?.user.full_name}`)
   }
 
   return (
@@ -59,7 +59,7 @@ export default function UpdateProfile() {
           <Text>Foto de perfil</Text>
           <Avatar
             src={session.data?.user.avatar_url}
-            alt={session.data?.user.name || ''}
+            alt={session.data?.user.full_name}
           />
         </label>
 
