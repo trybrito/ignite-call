@@ -29,8 +29,6 @@ interface CalendarProps {
 }
 
 export function Calendar({ selectedDate, onDateSelected }: CalendarProps) {
-  console.log(selectedDate)
-
   const [currentDate, setCurrentDate] = useState(() => {
     return dayjs().set('date', 1)
   })

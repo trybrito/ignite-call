@@ -30,7 +30,6 @@ export function ConfirmStep() {
   async function handleConfirmScheduling(data: ConfirmScheduleFormData) {
     await new Promise<void>((resolve) =>
       setTimeout(() => {
-        console.log(data)
         resolve()
       }, 1000),
     )
