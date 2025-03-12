@@ -62,8 +62,6 @@ export default async function handler(
     return startHour + i
   })
 
-  console.log(possibleSchedulingHours)
-
   const blockedSchedulingHours = await prisma.scheduling.findMany({
     select: {
       date: true,
