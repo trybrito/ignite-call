@@ -27,6 +27,7 @@ export const FormHeader = styled('div', {
     display: 'flex',
     alignItems: 'center',
     gap: '$2',
+    textTransform: 'capitalized',
 
     svg: {
       color: '$gray200',
