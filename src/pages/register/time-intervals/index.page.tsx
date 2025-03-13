@@ -151,6 +151,9 @@ export default function TimeIntervals() {
                       step={60}
                       disabled={!intervals[index].enabled}
                       {...register(`intervals.${index}.startTime`)}
+                      crossOrigin={undefined}
+                      onPointerEnterCapture={undefined}
+                      onPointerLeaveCapture={undefined}
                     />
                     <TextInput
                       size="sm"
@@ -158,6 +161,9 @@ export default function TimeIntervals() {
                       step={60}
                       disabled={!intervals[index].enabled}
                       {...register(`intervals.${index}.endTime`)}
+                      crossOrigin={undefined}
+                      onPointerEnterCapture={undefined}
+                      onPointerLeaveCapture={undefined}
                     />
                   </IntervalInputs>
                 </IntervalItem>

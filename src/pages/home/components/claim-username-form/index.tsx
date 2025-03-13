@@ -44,6 +44,9 @@ export function ClaimUsernameForm() {
           prefix="ignite.com/"
           placeholder="seu-usuário"
           {...register('username')}
+          crossOrigin={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
         />
         <Button size="sm" type="submit" disabled={isSubmitting}>
           Reservar
