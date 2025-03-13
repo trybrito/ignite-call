@@ -12,10 +12,12 @@ export default async function handler(
   }
 
   const username = String(req.query.username)
-  const { date } = req.query
+  const { date, timezoneOffset } = req.query
 
-  if (!date) {
-    return res.status(400).json({ message: 'Date was not provided.' })
+  if (!date || !timezoneOffset) {
+    return res
+      .status(400)
+      .json({ message: 'Date or timezoneOffset not provided.' })
   }
 
   const user = await prisma.user.findUnique({ where: { username } })
@@ -26,6 +28,14 @@ export default async function handler(
 
   const referenceDate = dayjs(String(date))
   const isPastDate = referenceDate.endOf('day').isBefore(new Date())
+
+  const timezoneOffsetInHours =
+    typeof timezoneOffset === 'string'
+      ? Number(timezoneOffset) / 60
+      : Number(timezoneOffset[0]) / 60
+
+  const referenceDateTimezoneOffsetInHours =
+    referenceDate.toDate().getTimezoneOffset() / 60
 
   if (isPastDate) {
     return res.json({
@@ -69,18 +79,28 @@ export default async function handler(
     where: {
       user_id: user.id,
       date: {
-        gte: referenceDate.set('hour', startHour).toDate(),
-        lt: referenceDate.set('hour', endHour).toDate(),
+        gte: referenceDate
+          .set('hour', startHour)
+          .add(timezoneOffsetInHours, 'hours')
+          .toDate(),
+        lte: referenceDate
+          .set('hour', endHour)
+          .add(timezoneOffsetInHours, 'hours')
+          .toDate(),
       },
     },
   })
 
   const availableSchedulingHours = possibleSchedulingHours.filter((hour) => {
     const isTimeBlocked = blockedSchedulingHours.some(
-      (blockedHour) => blockedHour.date.getHours() === hour,
+      (blockedHour) =>
+        blockedHour.date.getUTCHours() - timezoneOffsetInHours === hour,
     )
 
-    const isTimeInPast = referenceDate.set('hour', hour).isBefore(new Date())
+    const isTimeInPast = referenceDate
+      .set('hour', hour)
+      .subtract(referenceDateTimezoneOffsetInHours, 'hours')
+      .isBefore(dayjs().utc().subtract(timezoneOffsetInHours, 'hours'))
 
     return !isTimeBlocked && !isTimeInPast
   })
